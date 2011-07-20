@@ -162,6 +162,7 @@ Ti.include(
 	'/exampleApp/ui/styles.js',
 	'/exampleApp/ui/LoginView.js',
 	'/exampleApp/ui/SignupWindow.js',
+	'/exampleApp/ui/InfoView.js',
 	'/exampleApp/ui/Button.js'
 );
 

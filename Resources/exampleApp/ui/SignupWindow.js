@@ -52,26 +52,28 @@
 			
 			userService.createUser(user, {
 				success: function(user) { 
-					Ti.API.info("Saved!" + JSON.stringify(user));
-					var newUser = new aea.model.User();
-					newUser.userDetails = user;
-					newUser.userDetails.password = pass;
-					newUser.save();
-					
-					aea.app.currentUser = newUser;				
-					aea.app.currentUser.afterLoad();
-					
-					aea.app.currentUser.authorize({
-						userEmail:aea.app.currentUser.email,
-						password:aea.app.currentUser.password,
-						success: function(u) {
-							Ti.App.fireEvent('app:hide.loader');							
-							Ti.API.info('successful fist sign-in!');
-							aea.ui.showSpringboard();
+					Ti.API.info("Saved!" + JSON.stringify(user));					
+					conn.login(user.userEmail, pass, {
+						success: function(usr) {
+							try {
+								Ti.API.info('successful auth! ' + JSON.stringify(usr));
+								//store off the connection for later use
+								aea.app.connection = conn;
+								aea.app.currentUser = usr;
+								Ti.App.Properties.setString('currentUserId', String(usr.id));
+								aea.ui.createInfoView().open();
+								
+							} catch (e) {
+								Ti.API.info(JSON.stringify(e));						
+							}
 						},
-						error: function() {Ti.App.fireEvent('app:hide.loader');},
-						failure: function() {Ti.App.fireEvent('app:hide.loader');}
-					});					
+						error: function() { 
+							Ti.API.error("ERROR authorizing");
+						},
+						failure: function() {
+							Ti.API.error("failed to connect");
+						}
+					});
 				},
 				error: function() {
 					Ti.App.fireEvent('app:hide.loader');
