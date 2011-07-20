@@ -1,0 +1,9 @@
+{
+    "types": [], 
+    "aliases": [
+        {
+            "type": "Titanium", 
+            "name": "Ti"
+        }
+    ]
+}
