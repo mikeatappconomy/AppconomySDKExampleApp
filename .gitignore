@@ -1,0 +1,9 @@
+build.log
+tmp
+build/*
+.fastdev*
+*.DS_Store
+**/.DS_Store
+**/*.swp
+*swp
+.settings/*
