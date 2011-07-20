@@ -160,6 +160,8 @@
 //Include major UI components and styling properties
 Ti.include(
 	'/exampleApp/ui/styles.js',
-	'/exampleApp/ui/ApplicationWindow.js'
+	'/exampleApp/ui/LoginView.js',
+	'/exampleApp/ui/SignupWindow.js',
+	'/exampleApp/ui/Button.js'
 );
 

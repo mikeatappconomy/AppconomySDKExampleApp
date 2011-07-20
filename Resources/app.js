@@ -1,5 +1,5 @@
 Ti.include('/exampleApp/sdk/core/Ext.js');
 Ti.include('/exampleApp/exampleApp.js');
 
-aea.app.mainWindow = aea.ui.createApplicationWindow();
-aea.app.mainWindow.open();
+aea.app.loginView = aea.ui.createLoginView();
+aea.app.loginView.open();

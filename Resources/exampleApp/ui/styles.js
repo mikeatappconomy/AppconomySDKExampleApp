@@ -44,6 +44,7 @@
 		Window: {
 			backgroundImage:aea.ui.theme.backgroundImage,
 			navBarHidden:true,
+			fullscreen:false,
 			softInputMode:(Ti.UI.Android) ? Ti.UI.Android.SOFT_INPUT_ADJUST_RESIZE : ''
 		},		
 		TextField: {
