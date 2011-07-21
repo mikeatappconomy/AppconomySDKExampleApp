@@ -1,4 +1,52 @@
 Appconomy SDK Example App:
 
+The purpose of this app is to provide a skeleton for developers to get started. This skeleton is appcelerator-specific and contains the suggested best-practices layout for consuming the Appconomy API. The javascript 
+SDK implementation is provided in the sdk/ directory.
+
+In addition to acting as a skeleton app to house the javascript flavor of the SDK, the app has a few screens that you may find helpful when implementing your application. These screens might help your understanding 
+of how one might consume the SDK. Particulary they show how to authenticate, signup, and retrieve groups the logged-in user may be a part of. Of course, you may feel free to discard these views 
+entirely or in part as you see fit. These view are as follows:
+
+1. ui/LoginView.js
+  a. This view is the first presented; it allows for a one-click login as the appconomy sandbox user. You may also provide your own username/password after you've created your own user against our sandbox.
+2. ui/SignupWindow.js
+  a. This is linked from the LoginView, when you click the 'Signup' button. All fields are required. After successfully creating your user, you will be able to use this user against our sandbox environment going forward.
+3. ui/InfoView.js 
+  a. This is the screen presented after a successful login. In order to show how one might consume our SDK, we've included a call to retrieve the groups the user is a member of. Of importance is to note the re-use 
+  of the 'connection' class that is stored off in aea.app.connection after a successful login. An 'authorized' instance of this connection class is required for all calls to Appconomy services.
+
+Developer Key:
+You will need to provide your own developer key in Resources/exampleApp/exampleApp.js, where you find the code:
+aea.developerKey = 'YOUR_KEY_HERE';
+
+Miscellaneous:
+Please note that this application is pointed to our sandbox environment - the data located at this environment is subject to being replaced often so please do not rely on any data located there.
+
 See up-to-date documentation and additional information at http://developer.appconomy.com
 
+
+Appconomy SDK示例应用程序： 
+
+这个程序的目的是提供一个开始开发的骨架。这个骨架是Appcelerator的具体的，包含建议的最佳做法消耗Appconomy API的布局。这个javascript 
+SDK的实施提供了SDK /目录。 
+
+除了作为一个骨架应用程序内部的JavaScript的SDK味道，应用程序，您可能会发现有助于实现应用程序时，有几个画面。这些画面可能会帮助您的理解 
+如何可能消耗的SDK。他们表现如何认证，注册，和检索组特别对已登录的用户可能是一个部分。当然，你可能会觉得放弃这些意见的自由 
+完全或部分您认为合适的。这些看法如下： 
+
+1。 UI / LoginView.js 
+  A.这种观点是首次提出的，它允许作为appconomy沙箱用户一键登录。您也可以提供自己的用户名/密码后，您已经创建了自己的用户对我们的沙箱。 
+2。 UI / SignupWindow.js 
+  A.这是联系在一起的LoginView，当你点击“注册”按钮。所有字段是必需的。成功创建用户后，你将能够使用此用户对我们的沙箱环境中向前发展。 
+3。 UI / InfoView.js 
+  A.这是一个成功的登录后屏幕。为了显示如何可能会消耗我们的SDK，我们提供了一个调用以检索用户是其成员的群体。重要的是要注意再利用 
+  “连线”类，它是存储在aea.app.connection成功登录后。就此类的实例是一个“授权”的要求Appconomy服务的所有调用。 
+
+开发重点： 
+您需要提供您自己开发的关键在资源/ exampleApp / exampleApp.js，在那里你找到代码： 
+aea.developerKey ='YOUR_KEY_HERE'; 
+
+杂项： 
+请注意，这个应用程序是指我们的沙箱环境 - 位于此环境中的数据是被取代的，往往因此请不要依靠设在那里的任何数据。 
+
+看到最多的最新文件和其他信息在http://developer.appconomy.com 
