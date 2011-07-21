@@ -77,6 +77,7 @@ var aea = {};
 	};
 	
 	aea.sandboxServer = 'http://dev.appconomy.com:8080/';
+	aea.developerKey = 'YOUR_KEY_HERE';
 
 })();
 

@@ -1,8 +1,8 @@
-#appname: AppconomySDKExampleApp
-#publisher: mcroeder
-#url: http://
-#image: appicon.png
-#appid: com.appconomy.com
-#desc: undefined
-#type: ipad
-#guid: c78b9bc2-035b-4488-87d8-d045f79161df
+#appname:AppconomySDKExampleApp
+#publisher:mcroeder
+#url:http://
+#image:appicon.png
+#appid:com.appconomy.com
+#desc:not specified
+#type:ipad
+#guid:c78b9bc2-035b-4488-87d8-d045f79161df

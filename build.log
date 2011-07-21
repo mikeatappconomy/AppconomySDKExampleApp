@@ -6,11 +6,12 @@ Logfile initialized
 [DEBUG] Waiting for device to be ready ...
 [TRACE] adb devices returned 1 devices/emulators
 [DEBUG] Device connected... (waited 0 seconds)
-[DEBUG] waited 0.010868 seconds on emulator to get ready
+[DEBUG] waited 0.012500 seconds on emulator to get ready
 [DEBUG] com.appconomy.com installed? True
 [INFO] Fastdev server running, deploying in Fastdev mode
 [INFO] Copying project resources..
-[TRACE] COPYING MODIFIED FILE: /Users/mcroeder/dev/titanium/AppconomySDKExampleApp/Resources/app.js => /Users/mcroeder/dev/titanium/AppconomySDKExampleApp/build/android/bin/assets/Resources/app.js
+[TRACE] COPYING MODIFIED FILE: /Users/mcroeder/dev/titanium/AppconomySDKExampleApp/Resources/exampleApp/ui/LoginView.js => /Users/mcroeder/dev/titanium/AppconomySDKExampleApp/build/android/bin/assets/Resources/exampleApp/ui/LoginView.js
+[TRACE] COPYING MODIFIED FILE: /Users/mcroeder/dev/titanium/AppconomySDKExampleApp/Resources/exampleApp/ui/SignupWindow.js => /Users/mcroeder/dev/titanium/AppconomySDKExampleApp/build/android/bin/assets/Resources/exampleApp/ui/SignupWindow.js
 [INFO] Tiapp.xml unchanged, skipping class generation
 [DEBUG] Processing Android resource drawables
 [DEBUG] found drawable-long-land-hdpi splash screen at /Users/mcroeder/dev/titanium/AppconomySDKExampleApp/Resources/android/images/res-long-land-hdpi/default.png
@@ -27,4 +28,5 @@ Logfile initialized
 [INFO] Re-launching application ... AppconomySDKExampleApp
 [INFO] Launching application ... AppconomySDKExampleApp
 [TRACE] Launch output: Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.appconomy.com/.AppconomysdkexampleappActivity }
+Warning: Activity not started, its current task has been brought to the front
 

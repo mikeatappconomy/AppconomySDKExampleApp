@@ -19,7 +19,7 @@
 		var label = Ti.UI.createLabel(aea.combine($$.boldHeaderText, {			
 			text:labelText,
 			top:9,
-			left:(button.width/2)-25,
+			left:_args.labelLeftPos||(button.width/2)-25,
 			color:aea.ui.theme.black
 		})); 
 		

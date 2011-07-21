@@ -173,7 +173,7 @@ Ext.namespace('com.appconomy.xita');
 			
 			// set all required properties in they are undefined
 			if(commentObject.commentMaker === undefined) {
-				commentObject.commentMaker = ic.app.currentUser.contactId;
+				commentObject.commentMaker = aea.app.currentUser.contactId;
 			}
 			if(commentObject.subjectMessage === undefined){
 				commentObject.subjectMessage = messageId;

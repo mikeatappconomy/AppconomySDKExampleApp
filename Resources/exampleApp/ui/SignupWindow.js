@@ -7,7 +7,7 @@
 		var win = Ti.UI.createWindow(aea.combine($$.Window,{
 			fullscreen:false
 		})),
-		headerView = Ti.UI.createButton(aea.combine($$.headerView, {
+		headerView = Ti.UI.createView(aea.combine($$.headerView, {
 			top:0
 		})),		
 		profileLabel = Ti.UI.createLabel(aea.combine($$.boldHeaderText, {
@@ -33,7 +33,7 @@
 			Ti.App.fireEvent('app:show.loader');
 
 			Ti.API.info('creating user...');
-			var conn = new com.appconomy.xita.XitaConnection('developerkey');
+			var conn = new com.appconomy.xita.XitaConnection(aea.developerKey);
 			var userService = new com.appconomy.xita.UserService(conn);
 			
 			var user = {};

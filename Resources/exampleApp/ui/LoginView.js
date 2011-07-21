@@ -39,14 +39,14 @@
 			passwordMask:true,
 			value:'sandbox'
 		})),
-		loginButton = aea.ui.createButton({localizedText:'login', top:20}),
+		loginButton = aea.ui.createButton({localizedText:'login', top:20}),		
 		signupButton = aea.ui.createButton({localizedText:'signup', top:30});
 
 		container.add(unLabel);
 		container.add(unField);
 		container.add(pwLabel);
 		container.add(pwField);
-		container.add(loginButton);
+		container.add(loginButton);		
 		container.add(signupButton);
 		win.add(container);
 
@@ -56,13 +56,9 @@
 		});
 		
 		loginButton.addEventListener('click', function() {
-			Ti.App.fireEvent('app:show.loader');
-			
-			Ti.API.info('Logging in...');
-			var connection = new com.appconomy.xita.XitaConnection('developerkey');
-			Ti.API.info('Got a connection...');			
+			var connection = new com.appconomy.xita.XitaConnection(aea.developerKey);			
 			connection.login(unField.value, pwField.value, {
-				success: function(usr) {
+				success: function(usr) { 
 					try {
 						Ti.API.info('successful auth! ' + JSON.stringify(usr));
 						//store off the connection for later use
@@ -74,13 +70,9 @@
 					} catch (e) {
 						Ti.API.info(JSON.stringify(e));						
 					}
-				},
-				error: function() { 
-					Ti.API.error("ERROR authorizing");
-				},
-				failure: function() {
-					Ti.API.error("failed to connect");
-				}
+				 },
+				error: function() { Ti.API.error("ERROR authorizing");},
+				failure: function() {Ti.API.error("failed to connect");}
 			});
 		});
 		
