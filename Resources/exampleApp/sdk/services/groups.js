@@ -147,6 +147,23 @@ Ext.namespace('com.appconomy.xita');
 		};
 		
 		/**
+		 * Load a given group. The retrieval of this group is dependent on the logged-in users' rights to view said group
+		 * @param {Object} callback optional callback methods for success, error, 
+		 * and failure.
+		 */
+		this.loadGroup = function(groupId, callback) {
+			var url = 'v1.3/groups/' + groupId;
+			if (callback.success !== undefined) {
+				var s = callback.success;
+				callback.success = function(code, result) {
+					var jsObj = json.parse(result.text);
+					s(jsObj);
+				}
+			}
+			connection.httpGet(url, callback);
+		};
+		
+		/**
 		 * Create a new group owned by the logged in user.
 		 * @param {Object} group the group definition.
 		 * @param {Object} callback optional callback methods for success, error 
