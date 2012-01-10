@@ -63,7 +63,7 @@
 						Ti.API.info('successful auth! ' + JSON.stringify(usr));
 						//store off the connection for later use
 						aea.app.connection = connection;
-						aea.app.currentUser = usr;
+						aea.app.currentUser = usr.user;
 						Ti.App.Properties.setString('currentUserId', String(usr.id));
 						aea.ui.createInfoView().open();
 						

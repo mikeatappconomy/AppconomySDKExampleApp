@@ -109,7 +109,7 @@ Ext.namespace('com.appconomy.xita');
 		 * and failure.
 		 */
 		this.loadUserById = function(userid, callback) {
-			var url = 'v1.2/users/' + userid;
+			var url = 'v1/users/' + userid;
 			xitaConnection.httpGet(url, callback);
 		};
 		
@@ -121,7 +121,7 @@ Ext.namespace('com.appconomy.xita');
 		 * the loaded user object.
 		 */
 		this.loadUserByLogin = function(login, callback) {
-			var url = 'v1.2/users/' + login;
+			var url = 'v1/users/' + login;
 			var s = callback.success;
 			callback.success = function(code, response) {
 				s(xita.Json.parse(response.text));
@@ -137,7 +137,7 @@ Ext.namespace('com.appconomy.xita');
 		 * the created user object.
 		 */
 		this.createUser = function(user, callback) {
-			var url = 'v1.2/users/';
+			var url = 'v1/users/';
 			var s = callback.success;
 			callback.success = function(code, response) {
 				s(xita.Json.parse(response.text));
@@ -152,7 +152,7 @@ Ext.namespace('com.appconomy.xita');
 		 * and failure. The success callback will be invoked with no arguments.
 		 */
 		this.deleteUser = function(userid, callback) {
-			var url = 'v1.2/users/' + userid;
+			var url = 'v1/users/' + userid;
 			var s = callback.success;
 			callback.success = function(code, response) {
 				s();
@@ -168,7 +168,7 @@ Ext.namespace('com.appconomy.xita');
 		 * the updated user.
 		 */
 		this.updateUser = function(user, callback) {
-			var url = 'v1.2/users/' + user.userID;
+			var url = 'v1/users/' + user.id;
 			var s = callback.success;
 			callback.success = function(code, response) {				
 				s(xita.Json.parse(response.text));

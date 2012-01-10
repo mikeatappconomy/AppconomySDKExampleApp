@@ -17,9 +17,8 @@
 			scrollType: 'vertical'		
 		}),
 		headerView = Ti.UI.createView(aea.combine($$.headerView,{top:0})),
-		userNameLabel = Ti.UI.createLabel(aea.combine($$.smallText, {text:L('lbl_uname') + aea.app.currentUser.userName, top:0, left:10})),
-		userEmailLabel = Ti.UI.createLabel(aea.combine($$.smallText, {text:L('lbl_email') + aea.app.currentUser.userEmail, top:5, left:10})),
-		userGuidLabel = Ti.UI.createLabel(aea.combine($$.smallText, {text:L('lbl_guid') + aea.app.currentUser.userID, top:10, left:10}));
+		userNameLabel = Ti.UI.createLabel(aea.combine($$.smallText, {text:L('lbl_uname') + aea.app.currentUser.login, top:0, left:10})),
+		userGuidLabel = Ti.UI.createLabel(aea.combine($$.smallText, {text:L('lbl_guid') + aea.app.currentUser.id, top:5, left:10}));
 		
 		headerView.addEventListener('click', function(){
 			win.close();
@@ -27,8 +26,7 @@
 		
 		//assemble main app window
 		win.add(headerView);
-		container.add(userNameLabel);
-		container.add(userEmailLabel);
+		container.add(userNameLabel);		
 		container.add(userGuidLabel);
 
 		win.add(container);

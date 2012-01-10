@@ -9,22 +9,22 @@ Ext.namespace('com.appconomy.xita');
 	var xita = com.appconomy.xita;
 
 	/**
-	 * Xita services pertaining to group messaging. Provides methods for communicating 
+	 * Xita services pertaining to group messaging. Provides methods for communicating
 	 * with groups.
-	 * 
-	 * No data is cached, so all methods in this class rely on asynchronous 
-	 * communication to the server. Therefore, none of the methods hava  return 
+	 *
+	 * No data is cached, so all methods in this class rely on asynchronous
+	 * communication to the server. Therefore, none of the methods hava  return
 	 * value and instead take an object containing (optional) callback functions:
 	 * success, error, and failure. The callback functions are invoked on successful
-	 * response from the server, error response from the server, and failure to 
+	 * response from the server, error response from the server, and failure to
 	 * connect to the server respectively.
-	 * 
+	 *
 	 * The error callback is invoked with two arguments: the http response code
 	 * and the response data. The failure callback is invoked with no arguments.
 	 * The success callback is invoked with the arguments specified in each method.
-	 * 
+	 *
 	 * Message objects returned by the server will look like the following:
-	 * 
+	 *
 	 *     {
 	 *       messageId:"2c9494ef3142bbb301314324d0e70019",
 	 *       message:"Hello everyone, let's talk about the Appconomy API",
@@ -61,56 +61,56 @@ Ext.namespace('com.appconomy.xita');
 	 *         }
 	 *       ]
 	 *     }
-	 * 
-	 * 
+	 *
+	 *
 	 * The properties of a group are:
-	 * 
-	 *  * `messageId` : _String_  
+	 *
+	 *  * `messageId` : _String_
 	 *    Globally Unique Identifier for this message
-	 *  * `message` : _String_  
+	 *  * `message` : _String_
 	 *    Text of the message, limited to 512 characters
-	 *  * `sender` : _String_  
+	 *  * `sender` : _String_
 	 *    GUID for contactId foreignKey
-	 *  * `senderName` : _String_  
+	 *  * `senderName` : _String_
 	 *    Convenience method for contact name
-	 *  * `userId` : _String_  
+	 *  * `userId` : _String_
 	 *    GUID for userId foreignKey
-	 *  * `groups` : _Array_  
+	 *  * `groups` : _Array_
 	 *    Array of groupIds this message is associated with
-	 *  * `group` : _String_ : **Deprecated**  
+	 *  * `group` : _String_ : **Deprecated**
 	 *    groupId for message this is related to. Use groups, this value will be deprecated
-	 *  * `messageTime` : _Long_  
+	 *  * `messageTime` : _Long_
 	 *    Creation Time. Epoch time in milliseconds
-	 *  * `updateTime` : _Long_  
+	 *  * `updateTime` : _Long_
 	 *    Update Time. Epoch time in milliseconds
-	 *  * `isNew` : _Boolean_ : **Deprecated**  
+	 *  * `isNew` : _Boolean_ : **Deprecated**
 	 *    No longer in use
-	 *  * `location` : _Boolean_  
+	 *  * `location` : _Boolean_
 	 *    Whether this message has a geolocation associated with it
-	 *  * `lat` : _Float_  
+	 *  * `lat` : _Float_
 	 *    Latitude of geolocation associated with this message. Only valid if 'location' property is true
-	 *  * `lon` : _Float_  
+	 *  * `lon` : _Float_
 	 *    Longitude of geolocation associated with this message. Only valid if 'location' property is true
-	 *  * `attachmentUrl` : _String_  
+	 *  * `attachmentUrl` : _String_
 	 *    URL to image attached to the message
-	 *  * `comments` : _Array_  
+	 *  * `comments` : _Array_
 	 *    Globally unique Identifier for this group
-	 *    * `commentId` : _String_  
+	 *    * `commentId` : _String_
 	 *      Globally Unique Identifier for this comment
-	 *    * `commentText` : _String_  
+	 *    * `commentText` : _String_
 	 *      Text of the comment
-	 *    * `commentTime` : _Long_  
+	 *    * `commentTime` : _Long_
 	 *      Timestamp for when the comment was created. Epoch time in milliseconds
-	 *    * `commentMaker` : _String_  
+	 *    * `commentMaker` : _String_
 	 *      GUID of the user that made the comment
-	 *    * `commentMakerName' : _String_  
+	 *    * `commentMakerName' : _String_
 	 *      Convenience method for the name of the user that made the comment
-	 *    * `subjectMessage` : _String_  
+	 *    * `subjectMessage` : _String_
 	 *      GUID of the parent message the comment is associated with
 	 */
 	com.appconomy.xita.MessageService = function(connection) {
 		var xitaConnection = connection;
-		
+
 		/**
 		 * Load the messages for the specified group.
 		 * @param {String} groupId the id of the group.
@@ -119,12 +119,31 @@ Ext.namespace('com.appconomy.xita');
 		 */
 		this.getMessages = function(groupId, callback) {
 			xita.Log.debug('Loading group messages: ');// + groupId);
-			var url = 'v1.2/messages/group/' + groupId;
+			var url = 'v1/messages/group/' + groupId;
 			if (callback.success !== undefined) {
 				var s = callback.success;
 				callback.success = function(code, result) {
-					Ti.API.debug('success - Loading group messages: ');
-					var jsObj = xita.Json.parse(result.text).messages;
+					Ti.API.debug('success - Loading group messages: ' + result.text);
+					var jsObj = xita.Json.parse(result.text);
+					s(jsObj);
+				}
+			}
+			connection.httpGet(url, callback);
+		};
+		
+		/**
+		 * Load the messages for all groups the logged-in user is a member of.
+		 * @param {Object} callback optional callback methods for success, error
+		 * and failure.
+		 */
+		this.getAllMessages = function(callback) {
+			xita.Log.debug('Loading ALL group messages visible to logged-in user');// + groupId);
+			var url = 'v1/messages/';
+			if (callback.success !== undefined) {
+				var s = callback.success;
+				callback.success = function(code, result) {
+					Ti.API.debug('success - Loading group messages: ' + result.text);
+					var jsObj = xita.Json.parse(result.text);
 					s(jsObj);
 				}
 			}
@@ -140,7 +159,7 @@ Ext.namespace('com.appconomy.xita');
 		 */
 		this.sendMessage = function(groupId, message, callback) {
 			xita.Log.debug('Sending message to: ' + groupId);
-			var url = 'v1.3/messages/groups?groupIds='  + groupId;
+			var url = 'v1/messages/group/'  + groupId;
 			if (callback.success !== undefined) {
 				var s = callback.success;
 				callback.success = function(code, result) {
@@ -149,8 +168,8 @@ Ext.namespace('com.appconomy.xita');
 				}
 			}
 			connection.httpPost(url, xita.Json.stringify(message), callback);
+
 		};
-		
 		/**
 		 * Comment on an existing message.
 		 * @param {String} messageId the id of the message.
@@ -160,29 +179,30 @@ Ext.namespace('com.appconomy.xita');
 		 */
 		this.sendComment = function(messageId, comment, callback) {
 			xita.Log.debug('Sending comment to: ' + messageId);
-			var url = 'v1.2/messages/'  + messageId + '/comment';
-			
+			var url = 'v1/messages/'  + messageId + '/comment';
+
 			// determine if the provided comment is an object or the comment text
 			var commentObject;
-			if(Ext.isString(comment)){
-				commentObject = {commentText:comment};
-			}
-			else{
+			if(Ext.isString(comment)) {
+				commentObject = {
+					text:comment
+				};
+			} else {
 				commentObject = comment;
 			}
-			
+
 			// set all required properties in they are undefined
 			if(commentObject.commentMaker === undefined) {
 				commentObject.commentMaker = aea.app.currentUser.contactId;
 			}
-			if(commentObject.subjectMessage === undefined){
-				commentObject.subjectMessage = messageId;
+			if(commentObject.subjectMessageId === undefined) {
+				commentObject.subjectMessageId = messageId;
 			}
-			if(commentObject.commentTime === undefined){
+			if(commentObject.commentTime === undefined) {
 				var d = new Date();
 				commentObject.commentTime = d.getTime();
 			}
-			
+
 			if (callback.success !== undefined) {
 				var s = callback.success;
 				callback.success = function(code, result) {
@@ -190,11 +210,10 @@ Ext.namespace('com.appconomy.xita');
 					s(jsObj);
 				}
 			}
-			connection.httpPut(url, xita.Json.stringify(commentObject), callback);
+			connection.httpPost(url, xita.Json.stringify(commentObject), callback);
 		};
-		
 		/**
-		 * Load a message and its comments. 
+		 * Load a message and its comments.
 		 * @param {String} messageId the id of the message.
 		 * @param {String} originatingGroupId the id of the group containing the message.
 		 * @param {Object} callback optional callback methods for success, error
@@ -202,7 +221,7 @@ Ext.namespace('com.appconomy.xita');
 		 */
 		this.getMessageAndComments = function(messageId,originatingGroupId,callback) {
 			xita.Log.debug('Loading group message: ' + messageId);
-			var url = 'v1.3/messages/' + messageId +"?originatingGroupId="+originatingGroupId;
+			var url = 'v1/messages/' + messageId;
 			if (callback.success !== undefined) {
 				var s = callback.success;
 				callback.success = function(code, result) {
@@ -212,17 +231,16 @@ Ext.namespace('com.appconomy.xita');
 			}
 			connection.httpGet(url, callback);
 		};
-		
 		/**
-         * Load the messages near a location.
-         * @param {Number} latitude latitude coordinate.
-         * @param {Number} longitude longitude coordinate.
-         * @param {Number} distance threshold in meters.
-         * @param {Object} callback optional callback methods for success, error
-         * and failure.
-         */
-        this.getMessagesNearLocation = function(latitude, longitude, distance, callback) {
+		 * Load the messages near a location.
+		 * @param {Number} latitude latitude coordinate.
+		 * @param {Number} longitude longitude coordinate.
+		 * @param {Number} distance threshold in meters.
+		 * @param {Object} callback optional callback methods for success, error
+		 * and failure.
+		 */
+		this.getMessagesNearLocation = function(latitude, longitude, distance, callback) {
 
-        };
+		};
 	}
 })();

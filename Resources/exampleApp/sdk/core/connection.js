@@ -6,7 +6,7 @@
 Ext.namespace('com.appconomy.xita');
 (function() {
 	var xita = com.appconomy.xita;
-	var BASE_URL = aea.sandboxServer+'groups/rest/';
+	var BASE_URL = aea.sandboxServer+'/matrix/rest/';
 	
 	/**
 	 * @class com.appconomy.xita.XitaConnection
@@ -18,12 +18,51 @@ Ext.namespace('com.appconomy.xita');
 	 * A XitaConnection is created using a company key which identifies the domain of
 	 * the 
 	 */
-	com.appconomy.xita.XitaConnection = function(companyKey) {
-		var companyKey = companyKey;
+	com.appconomy.xita.XitaConnection = function(key) {
+		var companyKey = key;
 		var username = null;
 		var password = null;
 		var userid = null;
 		var that = this;
+		var cloud = null;
+		
+		this.normalizeLocalHostUri = function(uri){
+			if(uri === 'http://localhost:8080'){
+				return aea.sandboxServer;
+			}
+			return uri;
+		},
+		
+		/*
+		 * Execute an HTTP request after resolving the relative URL. 
+		 * @param {String} relativeUrl the relative URL to request.
+		 * @param {Function} httpMethod the HTTP method to invoke.
+		 * @param {Array} config the http configuration
+		 * @param {Object/String} data (optional) the POST/PUT data. 
+		 */
+		this.executeRequestWithCloudUrl = function(relativeUrl, httpMethod, config, data) {
+		    if (cloud === null) {
+		        var cloudUrl = BASE_URL + 'v1/cloud?xid=' + companyKey;
+		        Ti.API.error('!!!!cloud request with ' + cloudUrl);
+		        com.appconomy.xita.Http.httpGet(cloudUrl, {
+		            success: function(code, response) {
+		                var parsedCloud = xita.Json.parse(response.text);
+		                cloud = parsedCloud.uri;
+		                cloud = that.normalizeLocalHostUri(cloud);
+		                that.executeRequestWithCloudUrl(relativeUrl, httpMethod, config, data);
+		            },
+		            error: config.error,
+		            failure: config.failure
+		        });
+		    } else {
+                var arguments = [config];
+                if (data !== undefined) {
+                    arguments.unshift(data);
+                }
+                arguments.unshift(this.getUrl(relativeUrl));
+		        httpMethod.apply(this, arguments);
+		    }
+		},
 		
 		/**
 		 * Login a user using the provided credentials.
@@ -50,7 +89,9 @@ Ext.namespace('com.appconomy.xita');
 			                   			callback.success(usr);
 			                   		}
 			                   	},
-			                   	error: callback.error,
+			                   	error: function(code) {
+			                   		callback.error(code);
+			                   	},
 			                   	failure: callback.failure
 			                   });
 		}, 
@@ -92,34 +133,49 @@ Ext.namespace('com.appconomy.xita');
 			return config;
 		},
 		
+		this.getUrl = function(relativeUrl) {
+		    var result = cloud + "/matrix/rest/" + relativeUrl;
+		    if (result.indexOf("?") == -1) {
+		        result = result + "?";
+		    } else { 
+		        result = result + "&";
+		    }
+		    result = result + "xid=" + companyKey; 
+		    return result;
+		},
+		
 		this.httpGet = function(relativeUrl, callback) {
-			Ti.API.info('httpGet: ' + relativeUrl);
 			var config = this.getConfig(callback);
-			var url = BASE_URL + relativeUrl;
-			Ti.API.info('httpGet: ' + url);
-			xita.Http.httpGet(url, config);
+            this.executeRequestWithCloudUrl(relativeUrl, xita.Http.httpGet, config);
+		},
+		
+		this.httpGetFullyQualified = function(fullyQualifiedUrl, callback) {
+			Ti.API.info('httpGet: ' + fullyQualifiedUrl);
+			var config = this.getConfig(callback);
+			//remove username and password so that the http call doesn't have the basic auth properties, which can confuse some non-appconomy services
+			delete config.username;
+			delete config.password;			
+			xita.Http.httpGet(fullyQualifiedUrl, config);
 		},
 		
 		this.httpPost = function(relativeUrl, data, callback) {
 			var config = this.getConfig(callback);
-			var url = BASE_URL + relativeUrl;
-			Ti.API.error('URL: ' + url);
-			xita.Http.httpPost(url, data, config);
+            this.executeRequestWithCloudUrl(relativeUrl, xita.Http.httpPost, config, data);
 		}, 
 		
 		this.httpPut = function(relativeUrl, data, callback) {
 			var config = this.getConfig(callback);
-			xita.Http.httpPut(BASE_URL + relativeUrl, data, config);
+            this.executeRequestWithCloudUrl(relativeUrl, xita.Http.httpPut, config, data);
 		},
 		
 		this.httpDelete = function(relativeUrl, callback) {
 			var config = this.getConfig(callback);
-			xita.Http.httpPut(BASE_URL + relativeUrl, config);
+            this.executeRequestWithCloudUrl(relativeUrl, xita.Http.httpDelete, config);
 		},
 		
 		this.httpHead = function(relativeUrl, callback) {
 			var config = this.getConfig(callback);
-			xita.Http.httpPut(BASE_URL + relativeUrl, config);
+			this.executeRequestWithCloudUrl(relativeUrl, xita.Http.httpHead, config);
 		}
 	
 	};

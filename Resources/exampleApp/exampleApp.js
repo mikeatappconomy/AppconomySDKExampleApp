@@ -76,7 +76,7 @@ var aea = {};
 		}
 	};
 	
-	aea.sandboxServer = 'http://dev.appconomy.com:8080/';
+	aea.sandboxServer = 'http://chatty.appconomy.com:8080';
 	aea.developerKey = 'YOUR_KEY_HERE';
 
 })();
@@ -89,7 +89,9 @@ Ti.include(
 Ti.include(
 	'/exampleApp/sdk/adapter/titanium.js',
 	'/exampleApp/sdk/core/connection.js',
-	'/exampleApp/sdk/services/users.js',
 	'/exampleApp/sdk/services/groups.js',
-	'/exampleApp/sdk/services/messages.js'
+	'/exampleApp/sdk/services/messages.js',
+	'/exampleApp/sdk/services/receipts.js',
+	'/exampleApp/sdk/services/subscriptions.js',
+	'/exampleApp/sdk/services/users.js'
 );
